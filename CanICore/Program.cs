@@ -53,6 +53,7 @@ namespace CanICore
                 {
                     tasks.Add(GetPackageMetadataAsync(packages[i].Id, packages[i].Version).ContinueWith(x => 
                     {
+                        Console.Write(".");
                         packageMetadatas.Add(x.Result);
                     }));
                 }
@@ -104,6 +105,7 @@ namespace CanICore
             {
                 var format = "| {0,-70} | {1,-70} |";
 
+                Console.WriteLine();
                 Console.WriteLine(string.Format(format, "Package", "Is compatible"));
 
                 foreach (var packageMetadata in packageMetadatas)
