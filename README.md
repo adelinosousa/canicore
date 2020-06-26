@@ -1,6 +1,7 @@
 # CanICore
 Command tool to check .net framework project dependencies are .net core compatible
 
+
 ## How to use
 
 ### Usage
@@ -19,8 +20,10 @@ CanICore -p C:\Path\To\NetFramework\Project
 
 **NOTE*** Csv file will be created in the same directory as the command tool.
 
+
 ## Improvements
 Let me know if you have any suggestions.
+
 
 ## License
 [LICENSE](LICENSE.md)
