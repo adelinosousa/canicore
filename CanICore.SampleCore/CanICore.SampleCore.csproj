@@ -1,0 +1,22 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AngleSharp" Version="0.14.0" />
+    <PackageReference Include="AntiXSS" Version="4.3.0" />
+    <PackageReference Include="AWSSDK.S3" Version="3.3.111.18" />
+    <PackageReference Include="HtmlAgilityPack" Version="1.11.24" />
+    <PackageReference Include="IdentityServer3" Version="2.6.3" />
+    <PackageReference Include="ImageProcessor.Web" Version="4.12.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+    <PackageReference Include="RabbitMQ.Client" Version="6.1.0" />
+    <PackageReference Include="RazorGenerator.Mvc" Version="2.4.9" />
+    <PackageReference Include="Site.Comb" Version="1.0.3" />
+    <PackageReference Include="T4MVC" Version="4.2.4" />
+  </ItemGroup>
+
+</Project>
