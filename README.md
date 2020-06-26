@@ -1,4 +1,4 @@
-# Can-I-Core
+# CanICore
 Command tool to check .net framework project dependencies are .net core compatible
 
 ## How to use
