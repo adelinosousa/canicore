@@ -73,6 +73,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Models\Package.cs" />
+    <Compile Include="Models\PackageSearchMetadata.cs" />
     <Compile Include="Models\PackageXmlDocument.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
