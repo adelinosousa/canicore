@@ -143,8 +143,6 @@ namespace CanICore
                         Console.WriteLine(string.Format(format, packageMetadata.Key, "No"));
                     }
                 }
-
-                Console.ReadLine();
             }
         }
     }
