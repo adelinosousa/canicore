@@ -1,6 +1,5 @@
 # CanICore
-Command tool to check .net framework project dependencies are .net core compatible
-
+Command line tool to check .net framework nuget packages are .net core compatible
 
 ## How to use
 
@@ -19,11 +18,6 @@ CanICore -p C:\Path\To\NetFramework\Project
 | -o        | Outputs result to a csv file |
 
 **NOTE*** Csv file will be created in the same directory as the command tool.
-
-
-## Improvements
-Let me know if you have any suggestions.
-
 
 ## License
 [LICENSE](LICENSE.md)
