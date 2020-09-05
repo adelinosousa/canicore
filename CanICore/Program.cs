@@ -95,7 +95,8 @@ namespace CanICore
         {
             if (options.Output)
             {
-                var output = new StringBuilder("Package, Is compatible");
+                var output = new StringBuilder();
+                output.AppendLine("Package, Is compatible");
 
                 foreach (var packageMetadata in packageMetadatas)
                 {
@@ -108,7 +109,7 @@ namespace CanICore
                     var dependencySet = packageMetadata.Value.DependencySets.FirstOrDefault(x => IsCompatible(x.TargetFramework));
                     if (dependencySet != null)
                     {
-                        output.AppendLine($"{packageMetadata.Key}, Yes ({dependencySet.TargetFramework.DotNetFrameworkName})");
+                        output.AppendLine($"{packageMetadata.Key}, Yes ({dependencySet.TargetFramework.DotNetFrameworkName.Replace(",", " ")})");
                     }
                     else
                     {
