@@ -57,7 +57,7 @@
         <CommandFlag>DefaultInvisible</CommandFlag>
         <CommandFlag>DynamicVisibility</CommandFlag>
         <Strings>
-          <ButtonText>CanICoreMenuCommand</ButtonText>
+          <ButtonText>Can I Core</ButtonText>
         </Strings>
       </Button>
     </Buttons>
