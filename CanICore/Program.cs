@@ -25,7 +25,7 @@ namespace CanICore
         public bool Output { get; set; }
     }
 
-    class Program
+    public class Program
     {
         static readonly SourceCacheContext sourceCacheContext = new SourceCacheContext();
         static readonly SourceRepository repository = Repository.Factory.GetCoreV3("https://api.nuget.org/v3/index.json");
@@ -36,9 +36,9 @@ namespace CanICore
             Parser.Default.ParseArguments<Options>(args).WithParsed(RunOptions);
         }
 
-        static void RunOptions(Options options)
+        public static string Run(string projectPath, bool consoleOutput)
         {
-            var packageFiles = Directory.GetFiles(options.Path, "packages.config", SearchOption.AllDirectories);
+            var packageFiles = Directory.GetFiles(projectPath, "packages.config", SearchOption.AllDirectories);
 
             var tasks = new List<Task>();
             var packageMetadatas = new ConcurrentDictionary<string, IPackageSearchMetadata>();
@@ -53,9 +53,10 @@ namespace CanICore
                 {
                     if (packageMetadatas.ContainsKey(FormatPackageSearchMetadataId(packages[i].Id, packages[i].Version))) continue;
 
-                    tasks.Add(GetPackageMetadataAsync(packages[i].Id, packages[i].Version).ContinueWith(x => 
+                    tasks.Add(GetPackageMetadataAsync(packages[i].Id, packages[i].Version).ContinueWith(x =>
                     {
-                        Console.Write(".");
+                        if(consoleOutput)
+                            Console.Write(".");
 
                         PackageSearchMetadata packageSearchMetadata = x.Result;
                         packageMetadatas.TryAdd(FormatPackageSearchMetadataId(packageSearchMetadata.PackageId, packageSearchMetadata.PackageVersion), packageSearchMetadata.PackageMetadata);
@@ -65,7 +66,21 @@ namespace CanICore
 
             Task.WaitAll(tasks.ToArray());
 
-            Output(options, packageMetadatas);
+            return consoleOutput ? OutputConsole(packageMetadatas) : OutputCsv(packageMetadatas);
+        }
+
+        static void RunOptions(Options options)
+        {
+            var output = Run(options.Path, !options.Output);
+
+            if(options.Output)
+            {
+                File.WriteAllText($"{AppDomain.CurrentDomain.BaseDirectory}canicore.csv", output.ToString());
+            }
+            else
+            {
+                Console.Write(output);
+            }
         }
 
         static string FormatPackageSearchMetadataId(string packageId, string packageVersion)
@@ -91,60 +106,61 @@ namespace CanICore
             return supportedFrameworks.Contains(nuGetFramework.Framework) && nuGetFramework.Version.Major <= 2;
         }
 
-        static void Output(Options options, ConcurrentDictionary<string, IPackageSearchMetadata> packageMetadatas)
+        static string OutputConsole(ConcurrentDictionary<string, IPackageSearchMetadata> packageMetadatas)
         {
-            if (options.Output)
+            var format = "| {0,-70} | {1,-70} |";
+
+            var output = new StringBuilder();
+            output.AppendLine();
+            output.AppendLine(string.Format(format, "Package", "Is compatible"));
+
+            foreach (var packageMetadata in packageMetadatas)
             {
-                var output = new StringBuilder();
-                output.AppendLine("Package, Is compatible");
-
-                foreach (var packageMetadata in packageMetadatas)
+                if (packageMetadata.Value == null)
                 {
-                    if (packageMetadata.Value == null)
-                    {
-                        output.AppendLine($"{packageMetadata.Key}, Not found");
-                        continue;
-                    }
-
-                    var dependencySet = packageMetadata.Value.DependencySets.FirstOrDefault(x => IsCompatible(x.TargetFramework));
-                    if (dependencySet != null)
-                    {
-                        output.AppendLine($"{packageMetadata.Key}, Yes ({dependencySet.TargetFramework.DotNetFrameworkName.Replace(",", " ")})");
-                    }
-                    else
-                    {
-                        output.AppendLine($"{packageMetadata.Key}, No");
-                    }
+                    output.AppendLine(string.Format(format, packageMetadata.Key, "Not found"));
+                    continue;
                 }
 
-                File.WriteAllText($"{AppDomain.CurrentDomain.BaseDirectory}canicore.csv", output.ToString());
-            } 
-            else
-            {
-                var format = "| {0,-70} | {1,-70} |";
-
-                Console.WriteLine();
-                Console.WriteLine(string.Format(format, "Package", "Is compatible"));
-
-                foreach (var packageMetadata in packageMetadatas)
+                var dependencySet = packageMetadata.Value.DependencySets.FirstOrDefault(x => IsCompatible(x.TargetFramework));
+                if (dependencySet != null)
                 {
-                    if (packageMetadata.Value == null)
-                    {
-                        Console.WriteLine(string.Format(format, packageMetadata.Key, "Not found"));
-                        continue;
-                    }
-
-                    var dependencySet = packageMetadata.Value.DependencySets.FirstOrDefault(x => IsCompatible(x.TargetFramework));
-                    if (dependencySet != null)
-                    {
-                        Console.WriteLine(string.Format(format, packageMetadata.Key, $"Yes ({dependencySet.TargetFramework.DotNetFrameworkName})"));
-                    }
-                    else
-                    {
-                        Console.WriteLine(string.Format(format, packageMetadata.Key, "No"));
-                    }
+                    output.AppendLine(string.Format(format, packageMetadata.Key, $"Yes ({dependencySet.TargetFramework.DotNetFrameworkName})"));
+                }
+                else
+                {
+                    output.AppendLine(string.Format(format, packageMetadata.Key, "No"));
                 }
             }
+
+            return output.ToString();
+        }
+
+        static string OutputCsv(ConcurrentDictionary<string, IPackageSearchMetadata> packageMetadatas)
+        {
+            var output = new StringBuilder();
+            output.AppendLine("Package, Is compatible");
+
+            foreach (var packageMetadata in packageMetadatas)
+            {
+                if (packageMetadata.Value == null)
+                {
+                    output.AppendLine($"{packageMetadata.Key}, Not found");
+                    continue;
+                }
+
+                var dependencySet = packageMetadata.Value.DependencySets.FirstOrDefault(x => IsCompatible(x.TargetFramework));
+                if (dependencySet != null)
+                {
+                    output.AppendLine($"{packageMetadata.Key}, Yes ({dependencySet.TargetFramework.DotNetFrameworkName.Replace(",", " ")})");
+                }
+                else
+                {
+                    output.AppendLine($"{packageMetadata.Key}, No");
+                }
+            }
+
+            return output.ToString();
         }
     }
 }
