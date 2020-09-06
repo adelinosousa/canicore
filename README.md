@@ -5,7 +5,7 @@ Command line tool to check .net framework nuget packages are .net core compatibl
 
 ### Usage
 
-Using command prompt
+Using **command prompt**
 ```bash
 CanICore -p C:\Path\To\NetFramework\Project 
 ```
@@ -15,8 +15,9 @@ Options
 | -p        | Path to .net framework project directory |
 | -o        | Outputs result to a csv file |
 
-Visual studio
-Install using CanICore.vsix
+Using **visual studio**
+
+Install using CanICore
 
 **NOTE*** Csv file will be created in the same directory as the command tool.
 
