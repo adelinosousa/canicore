@@ -20,4 +20,4 @@ CanICore -p C:\Path\To\NetFramework\Project
 **NOTE*** Csv file will be created in the same directory as the command tool.
 
 ## License
-[LICENSE](LICENSE.md)
+[LICENSE](LICENSE)
