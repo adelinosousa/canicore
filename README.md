@@ -24,7 +24,7 @@ Using **visual studio**
  - Select *Tools* > *Can I Core*. Please note that this process could take a while. Depends how many nuget packages it needs to check
  - Result can be seen in the **output** window - (CTRL+ALT+O)
 
-## Improvements
+### Improvements
 Loading indicator for vsix
 
 ## License
