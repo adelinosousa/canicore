@@ -1,11 +1,9 @@
 # CanICore
 Check .net framework nuget packages are .net core compatible
 
-## How to use
+## Usage
 
-### Usage
-
-#### Command prompt
+### Command prompt
 
 Download latest release [CanICore](https://github.com/adelinosousa/canicore/releases/download/1.0.1/CanICore-1.0.1.zip)
 
@@ -20,7 +18,7 @@ Options
 
 **NOTE*** Csv file will be created in the same directory as the command tool.
 
-#### Visual studio
+### Visual studio
 
  - Download latest release of [CanICore](https://github.com/adelinosousa/canicore/releases/download/vsix-1.0.0/CanICore.vsix)
  - Close all open instances of Visual Studio, then double-click the [CanICore](https://github.com/adelinosousa/canicore/releases/download/vsix-1.0.0/CanICore.vsix) to install it
@@ -30,8 +28,8 @@ Options
  
 ![](vs-extension-demo.gif)
  
-### Improvements
+## Improvements
 Loading indicator for vsix
 
-## License
+# License
 [LICENSE](LICENSE)
